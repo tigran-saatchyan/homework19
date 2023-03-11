@@ -1,40 +1,76 @@
-"""Genres Service module"""
+"""Genre Service module"""
 
-from dao.genres import GenresDAO
+from dao.genres import GenreDAO
+from dao.model.genre import Genre
 from log_handler import services_logger
 
 
-class GenresService:
+class GenreService:
     """
-    Genres service class
+    GenreService class provides methods to interact with the GenreDAO.
+
+    :param genres_dao: A GenreDAO object to use for database interaction.
     """
 
-    def __init__(self, genres_dao: GenresDAO):
+    def __init__(self, genres_dao: GenreDAO):
+        """
+        Constructor method.
+
+        :param genres_dao: The data access object for genres.
+        """
         self.genres_dao = genres_dao
         self.logger = services_logger
 
-    def get_all_genres(self):
+    def get_all(self):
         """
-        Get all genres from DB
-        :return:    - all genres
+        Retrieves all genres.
+
+        :return: A list of all genres.
         """
         self.logger.info('Retrieving all genres')
-        return self.genres_dao.get_all_genres()
+        return self.genres_dao.get_all()
 
-    def get_one_genre(self, gid):
+    def get_one(self, gid):
         """
-        Get one genre by genre ID
-        :param gid:     - genre id
-        :return:        - one genre
+        Retrieves a genre by ID.
+
+        :param gid: The ID of the genre to retrieve.
+
+        :return: The genre object.
         """
         self.logger.info(f'Retrieving genre with ID {gid}')
-        return self.genres_dao.get_one_genre(gid)
+        return self.genres_dao.get_one(gid)
 
-    def post_genre(self, genre):
+    def create(self, genre):
         """
-        Add new genre to DB
-        :param genre:   - genre name
-        :return:        - None
+        Adds a new genre.
+
+        :param genre: The genre object to add.
+
+        :return: The ID of the new genre.
         """
         self.logger.info('Adding new genre')
-        return self.genres_dao.post_genre(genre)
+        return self.genres_dao.create(genre)
+
+    def update(self, gid, genre_data):
+        """
+        Updates a genre.
+
+        :param gid: The ID of the genre to update.
+        :param genre_data: The updated genre data.
+
+        :return: The number of rows affected.
+        """
+        self.logger.info(f"Updating genre with ID {gid}")
+        result = self.genres_dao.update(gid, genre_data)
+        self.logger.info(f"Updated {result} rows")
+        return result
+
+    def delete(self, gid):
+        """
+        Deletes a genre.
+
+        :param gid: The ID of the genre to delete.
+        """
+        self.logger.info(f"Deleting genre with ID {gid}")
+        self.genres_dao.delete(gid)

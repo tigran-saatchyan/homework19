@@ -12,73 +12,36 @@ logging.basicConfig(
     level=logging.DEBUG
 )
 
+formatter = logging.Formatter(
+    "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+
+
+def create_logger(name, filename):
+    """
+    Creates a logger with the specified name and writes log messages to
+    the specified file.
+
+    :param name: The name of the logger.
+    :param filename: The name of the file to which log messages should be
+        written.
+
+    :returns: The created logger instance.
+    """
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.INFO)
+    file_handler = logging.FileHandler(os.path.join(LOG_DIR, filename))
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    return logger
+
+
 # create logger for services application module
-services_logger = logging.getLogger('services')
-services_logger.setLevel(logging.INFO)
-
-# create file handler and set level to debug
-services_fh = logging.FileHandler(
-    os.path.join(LOG_DIR, 'services', 'services.log')
-)
-services_fh.setLevel(logging.INFO)
-
-# create formatter
-services_formatter = logging.Formatter(
-    "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
-
-# add formatter to handler
-services_fh.setFormatter(services_formatter)
-
-# add handler to logger
-services_logger.addHandler(services_fh)
+services_logger = create_logger('services', 'services/services.log')
 
 # create logger for places module
-dao_logger = logging.getLogger('dao')
-dao_logger.setLevel(logging.INFO)
-
-# create file handler and set level to debug
-dao_fh = logging.FileHandler(
-    os.path.join(
-        LOG_DIR,
-        'dao',
-        'dao.log'
-    )
-)
-dao_fh.setLevel(logging.INFO)
-
-# create formatter
-dao_formatter = logging.Formatter(
-    "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
-
-# add formatter to handler
-dao_fh.setFormatter(dao_formatter)
-
-# add handler to logger
-dao_logger.addHandler(dao_fh)
+dao_logger = create_logger('dao', 'dao/dao.log')
 
 # create logger for places module
-views_logger = logging.getLogger('views')
-views_logger.setLevel(logging.INFO)
-
-# create file handler and set level to debug
-views_fh = logging.FileHandler(
-    os.path.join(
-        LOG_DIR,
-        'views',
-        'views.log'
-    )
-)
-views_fh.setLevel(logging.INFO)
-
-# create formatter
-views_formatter = logging.Formatter(
-    "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
-
-# add formatter to handler
-views_fh.setFormatter(views_formatter)
-
-# add handler to logger
-views_logger.addHandler(views_fh)
+views_logger = create_logger('views', 'views/views.log')

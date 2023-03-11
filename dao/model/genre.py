@@ -1,15 +1,15 @@
-"""Genres model and schema module"""
+"""Genre model and schema module"""
 
 from marshmallow import Schema, fields
 
 from setup_db import db
 
 
-class Genres(db.Model):
+class Genre(db.Model):
     """
-    Genres model
+    Genre model
     """
-    __tablename__ = 'genres'
+    __tablename__ = 'genre'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
 
@@ -17,9 +17,9 @@ class Genres(db.Model):
         return f'Genre: {self.id} - {self.name}'
 
 
-class GenresSchema(Schema):
+class GenreSchema(Schema):
     """
-    Genres schema
+    Genre schema
     """
     id = fields.Int()
     name = fields.Str()
